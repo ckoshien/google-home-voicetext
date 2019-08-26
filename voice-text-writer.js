@@ -59,7 +59,7 @@ class VoiceTextWriter {
    */
   convertToText(text,speakerType) {
     return new Promise((resolve, reject)=>{
-      speaker = this.returnSpeaker(speakerType);
+      let speaker = this.returnSpeaker(speakerType);
       voice
         .speaker(speaker)
         .emotion(voice.EMOTION.HAPPINESS)
