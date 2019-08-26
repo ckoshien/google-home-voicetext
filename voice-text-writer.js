@@ -21,7 +21,7 @@ if (process.env["WIRELESS_IP"]) {
 
 const FILE_SERVER_PORT = "8888";
 const VOICETEXT_API_KEY = process.env["VOICETEXT_API_KEY"];
-const VOICETEXT_SPEAKER = process.env["VOICETEXT_SPEAKER"];
+//const VOICETEXT_SPEAKER = process.env["VOICETEXT_SPEAKER"];
 
 const VoiceText = require("voicetext");
 const voice = new VoiceText(VOICETEXT_API_KEY);
@@ -31,25 +31,37 @@ const OUTPUT_URL =
   const fs = require("fs");
 
 let SPEAKER;
-if (VOICETEXT_SPEAKER === "BEAR") {
-  SPEAKER = voice.SPEAKER.BEAR;
-} else if (VOICETEXT_SPEAKER === "HARUKA") {
-  SPEAKER = voice.SPEAKER.HARUKA;
-} else if (VOICETEXT_SPEAKER === "SANTA") {
-  SPEAKER = voice.SPEAKER.SANTA;
-} else if (VOICETEXT_SPEAKER === "SHOW") {
-  SPEAKER = voice.SPEAKER.SHOW;
-} else if (VOICETEXT_SPEAKER === "TAKERU") {
-  SPEAKER = voice.SPEAKER.TAKERU;
-} else {
-  SPEAKER = voice.SPEAKER.HIKARI;
-}
+
 
 class VoiceTextWriter {
-  convertToText(text) {
-    return new Promise(function(resolve, reject) {
+
+  returnSpeaker(speaker){
+    switch(speaker){
+      case "bear":
+        return voice.SPEAKER.BEAR;
+      case "haruka":
+        return voice.SPEAKER.HARUKA;
+      case "santa":
+        return voice.SPEAKER.SANTA;
+      case "show":
+        return voice.SPEAKER.SHOW;
+      case "takeru":
+        return voice.SPEAKER.TAKERU;
+      default:
+        return voice.SPEAKER.HIKARI;
+    }
+  }
+
+  /**
+   * 
+   * @param {*} text 音声にするテキスト
+   * @param {*} speaker 話者タイプ
+   */
+  convertToText(text,speakerType) {
+    return new Promise((resolve, reject)=>{
+      speaker = this.returnSpeaker(speakerType);
       voice
-        .speaker(SPEAKER)
+        .speaker(speaker)
         .emotion(voice.EMOTION.HAPPINESS)
         .emotion_level(voice.EMOTION_LEVEL.HIGH)
         .volume(150)

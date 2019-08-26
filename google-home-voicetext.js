@@ -19,7 +19,13 @@ const ip = function(ip) {
   return this;
 };
 
-const notify = function(message, callback) {
+/**
+ * 
+ * @param {*} message 
+ * @param {*} speakerType 
+ * @param {*} callback 
+ */
+const notify = function(message,speakerType, callback) {
   if (!deviceAddress) {
     browser.start();
     browser.on("serviceUp", function(service) {
@@ -31,14 +37,14 @@ const notify = function(message, callback) {
       );
       if (service.name.includes(device.replace(" ", "-"))) {
         deviceAddress = service.addresses[0];
-        getSpeechUrl(message, deviceAddress, function(res) {
+        getSpeechUrl(message,speakerType, deviceAddress, function(res) {
           callback(res);
         });
       }
       browser.stop();
     });
   } else {
-    getSpeechUrl(message, deviceAddress, function(res) {
+    getSpeechUrl(message,speakerType, deviceAddress, function(res) {
       callback(res);
     });
   }
@@ -69,9 +75,9 @@ const play = function(mp3_url, callback) {
   }
 };
 
-const getSpeechUrl = function(text, host, callback) {
+const getSpeechUrl = function(text, speakerType, host, callback) {
   voiceTextWriter
-    .convertToText(text)
+    .convertToText(text,speakerType)
     .then(function(result, reject) {
       onDeviceUp(host, result, function(res) {
         callback(res);

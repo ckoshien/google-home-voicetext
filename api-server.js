@@ -20,9 +20,10 @@ app.post("/google-home-voicetext", urlencodedParser, function(req, res) {
   if (!req.body) return res.sendStatus(400);
   console.log(req.body);
   const text = req.body.text;
+  const speaker = req.body.speaker;
   if (text) {
     try {
-      googlehome.notify(text, function(notifyRes) {
+      googlehome.notify(text,speaker, function(notifyRes) {
         console.log(notifyRes);
         res.send(deviceName + " will say: " + text + "\n");
       });
