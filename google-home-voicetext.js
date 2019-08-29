@@ -85,7 +85,7 @@ const getSpeechUrl = function(text, speakerType, host, callback) {
     })
     .catch(function onRejected(error) {
       console.error(error);
-      throw new Error(error);
+      process.exit(1);
     });
 };
 
